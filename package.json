@@ -1,5 +1,9 @@
 {
+<<<<<<< HEAD
   "name": "gametracker-backend1",
+=======
+  "name": "gametracker-frontend",
+>>>>>>> 9215e704cd7bc4842a6c36b50f7dc1b82b669135
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -10,10 +14,15 @@
     "preview": "vite preview"
   },
   "dependencies": {
+<<<<<<< HEAD
     "axios": "^1.13.2",
     "react": "^19.1.1",
     "react-dom": "^19.1.1",
     "react-router-dom": "^7.9.6"
+=======
+    "react": "^19.1.1",
+    "react-dom": "^19.1.1"
+>>>>>>> 9215e704cd7bc4842a6c36b50f7dc1b82b669135
   },
   "devDependencies": {
     "@eslint/js": "^9.36.0",
