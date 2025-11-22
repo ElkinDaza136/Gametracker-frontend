@@ -2,15 +2,21 @@ import React from "react";
 
 export default function EstadisticasPersonales({ juegos = [] }) {
   const total = juegos.length;
-  const completados = juegos.filter(j => j.completed).length;
-  const totalHoras = juegos.reduce((s, j) => s + (Number(j.hoursPlayed) || 0), 0);
-  const avgRating = total ? (juegos.reduce((s, j) => s + (Number(j.rating) || 0), 0) / total).toFixed(2) : "—";
+  
+  // Ajuste para leer variables en español (backend) o inglés (legacy)
+  const completados = juegos.filter(j => j.completado || j.completed).length;
+  
+  const totalHoras = juegos.reduce((s, j) => s + (Number(j.horasJugadas || j.hoursPlayed) || 0), 0);
+  
+  const avgRating = total ? (juegos.reduce((s, j) => s + (Number(j.puntuacion || j.rating) || 0), 0) / total).toFixed(2) : "—";
 
-  // genero mas jugado (por genre)
+  // genero mas jugado
   const genreCount = {};
   juegos.forEach(j => {
-    if (j.genre) genreCount[j.genre] = (genreCount[j.genre] || 0) + 1;
+    const g = j.genero || j.genre;
+    if (g) genreCount[g] = (genreCount[g] || 0) + 1;
   });
+  
   const topGenre = Object.entries(genreCount).sort((a,b)=>b[1]-a[1])[0]?.[0] || "—";
 
   return (

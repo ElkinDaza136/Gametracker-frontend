@@ -14,11 +14,15 @@ export default function ListaResenas({ resenas = [], onEditar, onEliminar, onCre
         {resenas.map((r) => (
           <li key={r._id} className="resena-card">
             <div className="row space-between">
-              <strong>{r.author || "Anónimo"}</strong>
-              <small>{new Date(r.createdAt || r.date || Date.now()).toLocaleString()}</small>
+              {/* Leemos autor o author por compatibilidad */}
+              <strong>{r.autor || r.author || "Anónimo"}</strong>
+              <small>{new Date(r.fechaCreacion || r.createdAt || Date.now()).toLocaleString()}</small>
             </div>
-            <div>⭐ {r.rating} / 5</div>
-            <p>{r.text}</p>
+            {/* Leemos puntuacion */}
+            <div>⭐ {r.puntuacion ?? r.rating} / 5</div>
+            {/* Leemos textoReseña */}
+            <p>{r.textoReseña || r.text}</p>
+            
             <div className="row actions">
               <button onClick={() => onEditar(r)}>Editar</button>
               <button onClick={() => onEliminar(r._id)}>Eliminar</button>

@@ -11,16 +11,18 @@ export default function FormularioJuego({ modo = "crear", juego = null, onCancel
     completed: false,
   });
 
+  // Cargar datos si estamos en modo edición
   useEffect(() => {
     if (modo === "editar" && juego) {
       setForm({
-        title: juego.title || "",
-        coverUrl: juego.coverUrl || "",
-        genre: juego.genre || "",
-        platforms: (juego.platforms || []).join(", "),
-        rating: juego.rating ?? 0,
-        hoursPlayed: juego.hoursPlayed ?? 0,
-        completed: juego.completed ?? false,
+        // Intentamos leer en español (del backend), si no existe, probamos inglés
+        title: juego.titulo || juego.title || "",
+        coverUrl: juego.imagenPortada || juego.coverUrl || "",
+        genre: juego.genero || juego.genre || "",
+        platforms: juego.plataforma || (Array.isArray(juego.platforms) ? juego.platforms.join(", ") : "") || "",
+        rating: juego.puntuacion ?? juego.rating ?? 0,
+        hoursPlayed: juego.horasJugadas ?? juego.hoursPlayed ?? 0,
+        completed: juego.completado ?? juego.completed ?? false,
       });
     }
   }, [modo, juego]);
@@ -32,15 +34,17 @@ export default function FormularioJuego({ modo = "crear", juego = null, onCancel
 
   const submit = (e) => {
     e.preventDefault();
+    
     const payload = {
-      title: form.title,
-      coverUrl: form.coverUrl,
-      genre: form.genre,
-      platforms: form.platforms.split(",").map(p => p.trim()).filter(Boolean),
-      rating: Number(form.rating),
-      hoursPlayed: Number(form.hoursPlayed),
-      completed: Boolean(form.completed),
+      titulo: form.title,                  
+      imagenPortada: form.coverUrl,
+      genero: form.genre,
+      plataforma: form.platforms,          
+      puntuacion: Number(form.rating),
+      horasJugadas: Number(form.hoursPlayed),
+      completado: Boolean(form.completed),
     };
+
     onGuardar(payload);
   };
 

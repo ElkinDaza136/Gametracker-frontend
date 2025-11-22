@@ -57,9 +57,19 @@ export default function App() {
   };
 
   const handleToggleCompletado = async (juego) => {
-    const payload = { ...juego, completed: !juego.completed };
+    // 1. Detectamos el estado actual 
+    const estadoActual = juego.completado ?? juego.completed ?? false;
+
+    // 2. Enviamos SOLO el campo que queremos cambiar, con el nombre en ESPAÑOL
+    const payload = { 
+      completado: !estadoActual 
+    };
+
     try {
+      // Enviamos la petición al backend
       const actualizado = await editarJuego(juego._id, payload);
+      
+      // Actualizamos el estado local con la respuesta del servidor
       setJuegos((s) => s.map(j => j._id === juego._id ? actualizado : j));
     } catch (err) {
       console.error(err);

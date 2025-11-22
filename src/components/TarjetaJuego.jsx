@@ -7,23 +7,33 @@ export default function TarjetaJuego({
   onVerResenas,
   onToggleCompletado
 }) {
-  // juego: { _id, title, coverUrl, genre, platforms, rating, hoursPlayed, completed }
+  
+  const display = {
+      titulo: juego.titulo || juego.title || "Sin título",
+      imagen: juego.imagenPortada || juego.coverUrl || "https://via.placeholder.com/240x140?text=No+Cover",
+      genero: juego.genero || juego.genre || "Desconocido",
+      plataforma: juego.plataforma || juego.platforms || "",
+      puntuacion: juego.puntuacion ?? juego.rating ?? "—",
+      horas: juego.horasJugadas ?? juego.hoursPlayed ?? 0,
+      completado: juego.completado ?? juego.completed
+  };
+
   return (
     <div className="card">
       <img
         className="card-cover"
-        src={juego.coverUrl || "https://via.placeholder.com/240x140?text=No+Cover"}
-        alt={juego.title}
+        src={display.imagen}
+        alt={display.titulo}
       />
       <div className="card-body">
-        <h3>{juego.title}</h3>
-        <p className="muted">{juego.genre} • {juego.platforms?.join(", ")}</p>
+        <h3>{display.titulo}</h3>
+        <p className="muted">{display.genero} • {display.plataforma}</p>
         <div className="row">
           <div>
-            <strong>{juego.rating ?? "—"}</strong> / 5 ⭐
+            <strong>{display.puntuacion}</strong> / 5 ⭐
           </div>
           <div>
-            {juego.hoursPlayed ?? 0} hrs
+            {display.horas} hrs
           </div>
         </div>
         <div className="row actions">
@@ -31,7 +41,7 @@ export default function TarjetaJuego({
           <button onClick={() => onEditar(juego)}>Editar</button>
           <button onClick={() => onEliminar(juego._id)}>Eliminar</button>
           <button onClick={() => onToggleCompletado(juego)}>
-            {juego.completed ? "Marcar Pendiente" : "Marcar Completado"}
+            {display.completado ? "Marcar Pendiente" : "Marcar Completado"}
           </button>
         </div>
       </div>

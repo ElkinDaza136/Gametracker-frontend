@@ -4,18 +4,23 @@ import FormularioJuego from "./FormularioJuego";
 import ListaResenas from "./ListaResenas";
 import FormularioResena from "./FormularioResena";
 import { getResenasPorJuego, crearResena, editarResena, eliminarResena } from "../services/resenasService";
-import { editarJuego } from "../services/juegosService";
 
 export default function BibliotecaJuegos({ juegos = [], loading, onCrear, onEditar, onEliminar, onToggleCompletado, recargar }) {
   const [query, setQuery] = useState("");
-  const [modoFormJuego, setModoFormJuego] = useState(null); // 'crear' | 'editar' | null
+  const [modoFormJuego, setModoFormJuego] = useState(null); 
   const [juegoSeleccionado, setJuegoSeleccionado] = useState(null);
   const [resenas, setResenas] = useState([]);
   const [mostrarResenasDe, setMostrarResenasDe] = useState(null);
   const [modoFormResena, setModoFormResena] = useState(null);
   const [resenaEditar, setResenaEditar] = useState(null);
 
-  const filtrar = juegos.filter(j => j.title.toLowerCase().includes(query.toLowerCase()));
+
+  // Usé (j.titulo || j.title || "") para evitar el crash si uno no existe
+  const filtrar = juegos.filter(j => {
+    const nombre = j.titulo || j.title || ""; 
+    return nombre.toLowerCase().includes(query.toLowerCase());
+  });
+  // -----------------------
 
   const abrirCrear = () => {
     setModoFormJuego("crear");
@@ -82,7 +87,6 @@ export default function BibliotecaJuegos({ juegos = [], loading, onCrear, onEdit
     }
   };
 
-  // Toggle completado handler (local UI + backend)
   const toggleCompletado = async (juego) => {
     await onToggleCompletado(juego);
     recargar && recargar();
@@ -125,12 +129,11 @@ export default function BibliotecaJuegos({ juegos = [], loading, onCrear, onEdit
         </div>
       }
 
-      {/* Panel de reseñas */}
       {mostrarResenasDe && (
         <div className="panel-right">
           <button className="close" onClick={()=> setMostrarResenasDe(null)}>Cerrar</button>
-
-          <h2>{mostrarResenasDe.title} — Reseñas</h2>
+          {/* Usar titulo o title */}
+          <h2>{mostrarResenasDe.titulo || mostrarResenasDe.title} — Reseñas</h2>
 
           {modoFormResena ? (
             <div>

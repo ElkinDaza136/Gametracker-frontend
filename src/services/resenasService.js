@@ -1,14 +1,17 @@
 import axios from "axios";
 
-const BASE_URL = "http://localhost:3000/api";
+const BASE_URL = "http://localhost:3000";
 
 export const getResenasPorJuego = async (juegoId) => {
-  const res = await axios.get(`${BASE_URL}/api/reviews/${juegoId}`);
+  const res = await axios.get(`${BASE_URL}/api/reviews/juego/${juegoId}`);
   return res.data;
 };
 
+
 export const crearResena = async (juegoId, data) => {
-  const res = await axios.post(`${BASE_URL}/api/reviews/${juegoId}`, data);
+ 
+  const payload = { ...data, juegoId }; 
+  const res = await axios.post(`${BASE_URL}/api/reviews`, payload);
   return res.data;
 };
 
